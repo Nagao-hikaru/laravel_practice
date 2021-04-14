@@ -10,7 +10,7 @@ services:
    # 先ほど作ったDockerfileを使って、コンテナをビルドするという指定
    build: ./docker/app
    # コンテナの名前を指定
-   container_name: pracrice
+   container_name: pracrice1
    # コンテナとホスト側のディレクトリを同期する場所の指定。laravelのソースが入る予定の場所
    volumes:
      - ./src:/var/www/html
@@ -18,7 +18,7 @@ services:
  db:
    # Docker HubからMySQL5.7の公式イメージをダウンロードしてくる指定
    image: mysql:5.7
-   container_name: practice_db
+   container_name: practice_db1
    # コンテナ内の環境変数を指定。環境変数を渡すとビルド時に設定してくれるDockerイメージがあるので、利用の際はDocker Hubのサイトで確認すると良い
    environment:
      MYSQL_ROOT_PASSWORD: root
