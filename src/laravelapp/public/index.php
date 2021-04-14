@@ -37,7 +37,6 @@
       for ($i=1; $i<= 365; $i++) {
         $date = strtotime('+' .$i . 'day');
         print "\n";
-    
       }
 
 
