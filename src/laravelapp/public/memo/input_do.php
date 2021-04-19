@@ -25,17 +25,14 @@ try {
     $user = 'laravel_user';
     $password = 'laravel_pass';
     $db = new PDO($dsn, $user, $password);
-    echo '接続成功';
+    $statement = $db->prepare('INSERT INTO memos SET memo=?, created_at=NOW()');
+    $statement->execute(array($_POST['memo']));
+    echo '登録できた';
 } catch (PDOException $e){
     echo 'DB接続エラー' . $e->getMessage();
 }
 
-$records = $db->query('select * from my_items');
-while ($record= $records->fetch()) {
-    print($record['item_name']);
-}
 
-echo $count;
 ?>
 </pre>
 </main>
