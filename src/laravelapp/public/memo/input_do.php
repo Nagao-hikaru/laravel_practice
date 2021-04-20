@@ -29,7 +29,7 @@ try {
     echo 'DB接続エラー' . $e->getMessage();
 }
 
-$memos = $db->query('SELECT * FROM memos ORDER BY id DESC')
+$memos = $db->query('SELECT * FROM memos ORDER BY id DESC');
 
 
 

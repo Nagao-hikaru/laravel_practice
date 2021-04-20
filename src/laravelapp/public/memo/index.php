@@ -19,24 +19,27 @@
 <h2>Practice</h2>
 <pre>
 <?php
+require('dbconnect.php');
 
-try {
-    $dsn = 'mysql:host=practice_db1;dbname=laravel_db';
-    $user = 'laravel_user';
-    $password = 'laravel_pass';
-    $db = new PDO($dsn, $user, $password);
-    echo '接続成功';
-} catch (PDOException $e){
-    echo 'DB接続エラー' . $e->getMessage();
+if (isset($_REQUEST) && is_numeric($_REQUEST['page'])) {
+    $page = $_REQUEST['page'];
+} else {
+    $page = 1;
 }
+$start = 5 * ($page - 1);
+$memos = $db->query('SELECT * FROM memos ORDER BY id DESC LIMIT ?, 5');
+$memos->bindParam(1,$_REQUSET['pae'])
+$memos->execute()
 
-$records = $db->query('select * from my_items');
-while ($record= $records->fetch()) {
-    print($record['item_name']);
-}
-
-echo $count;
 ?>
+
+<article>
+    <?php while ($memo = $memos->fetch()): ?>
+        <p><a href="#"><?php print(mb_substr(($memo['memo']), 0, 50)); ?></a></p>
+        <time><?php print($memo['created_at']); ?></time>
+        <hr>
+    <?php endwhile ?>
+</article>
 </pre>
 </main>
 </body>    
