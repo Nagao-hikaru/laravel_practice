@@ -1,3 +1,7 @@
+<?php
+session_start();
+$_SESSION['aaa'] = 'hozon';
+?>
 <!doctype html>
 <html lang="ja">
 <head>
@@ -6,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="../css/style.css">
 
 <title>PHP</title>
 </head>
@@ -18,10 +22,9 @@
 <main>
 <h2>Practice</h2>
 <pre>
-<?php
-
-?>
+<a href="page02.php">idou</a>
 </pre>
 </main>
 </body>    
 </html>
+
