@@ -28,8 +28,8 @@ if (isset($_REQUEST) && is_numeric($_REQUEST['page'])) {
 }
 $start = 5 * ($page - 1);
 $memos = $db->query('SELECT * FROM memos ORDER BY id DESC LIMIT ?, 5');
-$memos->bindParam(1,$_REQUSET['pae'])
-$memos->execute()
+$memos->bindParam(1, $start, $_REQUSET['page']);
+$memos->execute();
 
 ?>
 
