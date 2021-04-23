@@ -15,10 +15,17 @@ if (!empty($_POST)) {
 	}
 	
 	if (empty($error)) {
-		$_SESSION['join'] == $_POST;
+		$_SESSION['join'] = $_POST;
 		header('Location: check.php');
 		exit();
 }
+
+}
+if ($_REQUEST['action'] == 'rewrite' && isset($_SESSION['join'])) {
+	$_POST = $_SESSION['join'];
+	// $_POST['name'] = $_SESSION['join']['name'];
+	// $_POST['email'] = $_SESSION['join']['email'];
+	// $_POST['password'] = $_SESSION['join']['password'];
 }
 ?>
 <!DOCTYPE html>
