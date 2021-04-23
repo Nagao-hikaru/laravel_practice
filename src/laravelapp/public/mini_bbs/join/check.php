@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (isset($_SESSION['join'])) {
+	
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
