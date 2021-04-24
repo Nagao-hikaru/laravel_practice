@@ -1,6 +1,6 @@
 <?php
 session_start();
-require('../dbconnect');
+require('../dbconnect.php');
 if (!empty($_POST)) {
 	if ($_POST['name'] === '') {
 		$error['name'] = 'blank';
@@ -22,7 +22,15 @@ if (!empty($_POST)) {
 		}
 	}
 
-	アカウントの重複チェック
+	// アカウントの重複チェック
+	if (empty($error)) {
+		$member = $db->prepare('SELECT COUNT(*) AS cnt FROM members WHERE email=?');
+		$member->execute(array($_POST['email']));
+		$record = $member->fetch();
+		if ($record['cnt'] > 0) {
+			$error['email'] = 'duplicate';
+		}
+	}
 	
 	if (empty($error)) {
 		$image = date('YmdHis') . $_FILES['image']['name'];
@@ -73,6 +81,9 @@ if ($_REQUEST['action'] == 'rewrite' && isset($_SESSION['join'])) {
         	<input type="text" name="email" size="35" maxlength="255" value="<?php print(htmlspecialchars($_POST['email']))?>" />
 					<?php if ($error['email'] === 'blank'): ?>
 						<p class='error'>meadoを入力してください</p>
+					<?php endif; ?>
+					<?php if ($error['email'] === 'duplicate'): ?>
+						<p class='error'>既に登録されているメールアドレスです。</p>
 					<?php endif; ?>
 		<dt>パスワード<span class="required">必須</span></dt>
 		<dd>
