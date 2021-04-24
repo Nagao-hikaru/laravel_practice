@@ -1,5 +1,6 @@
 <?php
 session_start();
+require('../dbconnect');
 if (!empty($_POST)) {
 	if ($_POST['name'] === '') {
 		$error['name'] = 'blank';
@@ -20,6 +21,8 @@ if (!empty($_POST)) {
 			$error['image'] = 'type';
 		}
 	}
+
+	アカウントの重複チェック
 	
 	if (empty($error)) {
 		$image = date('YmdHis') . $_FILES['image']['name'];
