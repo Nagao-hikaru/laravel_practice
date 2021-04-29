@@ -15,6 +15,22 @@ if (isset($_SESSION['id']) && $_SESSION['time'] + 3600 > time()) {
   exit();
 }
 
+if (!empty($_POST)) {
+  if ($_POST['message'] !== '') {
+    $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?, created_at=NOW()');
+    $message->execute(array(
+      $member['id'],
+      $_POST['message'],
+    ));
+
+    header('Location: index.php');
+    exit();
+  }
+}
+
+$posts = $db->query('SELECT * from members inner join posts on members.id = posts.member_id order by posts.created_at desc');
+var_dump($posts);
+
 ?>
 
 <!DOCTYPE html>
@@ -50,14 +66,16 @@ if (isset($_SESSION['id']) && $_SESSION['time'] + 3600 > time()) {
       </div>
     </form>
 
+<?php foreach($posts as $post): ?>
     <div class="msg">
-    <img src="member_picture" width="48" height="48" alt="" />
-    <p><span class="name">（）</span>[<a href="index.php?res=">Re</a>]</p>
-    <p class="day"><a href="view.php?id="></a>
+    <img src="member_picture/<?php htmlspecialchars(print($post['picture']), ENT_QUOTES) ;?>" width="48" height="48" alt="<?php htmlspecialchars(print($post['name']), ENT_QUOTES) ;?>" />
+    <p><?php htmlspecialchars(print($post['message']), ENT_QUOTES) ;?><span class="name">（<?php htmlspecialchars(print($post['name']), ENT_QUOTES) ;?>）</span>[<a href="index.php?res=">Re</a>]</p>
+    <p class="day"><?php htmlspecialchars(print($post['created_at']), ENT_QUOTES) ;?> <a href="view.php?id="></a>
 <a href="view.php?id=">
 返信元のメッセージ</a>
 [<a href="delete.php?id="
 style="color: #F33;">削除</a>]
+<?php endforeach; ?>
     </p>
     </div>
 
