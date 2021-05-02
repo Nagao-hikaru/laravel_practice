@@ -29,7 +29,9 @@ if (!empty($_POST)) {
   }
 }
 
-$posts = $db->query('SELECT * from members inner join posts on members.id = posts.member_id order by posts.created_at desc');
+// $posts = $db->query('SELECT * from members inner join posts on members.id = posts.member_id order by posts.created_at desc');
+
+$posts = $db->query('SELECT posts.id, members.picture, members.name, posts.message, posts.created_at, posts.message_reply_id FROM members left join posts on members.id=posts.member_id order by posts.created_at desc');
 // var_dump($posts);
 
 if (isset($_REQUEST['res'])) {
@@ -95,8 +97,8 @@ if (isset($_REQUEST['res'])) {
     <div class="msg">
     <img src="member_picture/<?php htmlspecialchars(print($post['picture']), ENT_QUOTES) ;?>" width="48" height="48" alt="<?php htmlspecialchars(print($post['name']), ENT_QUOTES) ;?>" />
     <p><?php htmlspecialchars(print($post['message']), ENT_QUOTES) ;?><span class="name">（<?php htmlspecialchars(print($post['name']), ENT_QUOTES) ;?>）</span>[<a href="index.php?res=<?php print(htmlspecialchars($post['id'], ENT_QUOTES))?>">Re</a>]</p>
-    <p class="day"><?php htmlspecialchars(print($post['created_at']), ENT_QUOTES) ;?> <a href="view.php?id="></a>
-    <a href="view.php?id=">
+    <p class="day"><a href="view.php?id=<?php print(htmlspecialchars($post['id'], ENT_QUOTES))?>"><?php htmlspecialchars(print($post['created_at']), ENT_QUOTES) ;?></a>
+    <a href="view.php?id=<?php htmlspecialchars(print($post['message_reply_id']), ENT_QUOTES) ;?>">
     返信元のメッセージ</a>
     [<a href="delete.php?id="
     style="color: #F33;">削除</a>]

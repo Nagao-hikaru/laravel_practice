@@ -1,4 +1,20 @@
+<?php
+session_start();
 
+require('dbconnect.php');
+
+if (empty($_REQUEST['id'])) {
+  header('Location: index.php');
+  exit();
+}
+$posts = $db->prepare('SELECT * FROM posts WHERE posts.id=?');
+$posts->execute(array($_REQUEST['id']));
+$post = $posts->fetch();
+
+$members = $db->prepare('SELECT * FROM members WHERE members.id=?');
+$members->execute(array($post['member_id']));
+$member = $members->fetch();
+?>
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -19,13 +35,15 @@
   <div id="content">
   <p>&laquo;<a href="index.php">一覧にもどる</a></p>
 
+  <?php if (isset($post)) :?>
     <div class="msg">
-    <img src="member_picture/" />
-    <p><span class="name">（）</span></p>
-    <p class="day"></p>
+    <img src="member_picture/<?php print(htmlspecialchars($member['picture'])); ?>" />
+    <p><?php print(htmlspecialchars($post['message'])); ?><span class="name">（<?php print(htmlspecialchars($member['name'])); ?>）</span></p>
+    <p class="day"><?php print(htmlspecialchars($post['created_at'])); ?></p>
     </div>
-
-	<p>その投稿は削除されたか、URLが間違えています</p>
+  <?php else: ?>
+    <p>その投稿は削除されたか、URLが間違えています</p>
+  <?php endif; ?>
   </div>
 </div>
 </body>
