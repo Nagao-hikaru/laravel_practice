@@ -17,10 +17,11 @@ if (isset($_SESSION['id']) && $_SESSION['time'] + 3600 > time()) {
 
 if (!empty($_POST)) {
   if ($_POST['message'] !== '') {
-    $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?, created_at=NOW()');
+    $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?, message_reply_id=?, created_at=NOW()');
     $message->execute(array(
       $member['id'],
       $_POST['message'],
+      $_POST['reply_post_id'],
     ));
 
     header('Location: index.php');
@@ -29,7 +30,31 @@ if (!empty($_POST)) {
 }
 
 $posts = $db->query('SELECT * from members inner join posts on members.id = posts.member_id order by posts.created_at desc');
-var_dump($posts);
+// var_dump($posts);
+
+if (isset($_REQUEST['res'])) {
+  // 返信の処理
+  // $response = $db->prepare('SELECT m.name, m.picture, p. FROM members m, posts p WHERE m.id=p.member_id AND p.id=?');
+  // $response->execute(array($_REQUEST['res']));
+
+  
+  $response = $db->prepare('SELECT * FROM posts WHERE posts.id=?');
+  $response->execute(array($_REQUEST['res']));
+  $res = $response->fetch();
+  // var_dump($res);
+  $men = $db->prepare('SELECT * FROM members WHERE members.id=?');
+  $men->execute(array($res['member_id']));
+  $contributor = $men->fetch();
+
+  $message = '@' . $contributor['name'] . '' . $res['message'];
+
+
+  // $response = $db->query('SELECT * FROM members inner join posts on members.id = posts.member_id WHERE posts.id=?');
+  // $response->execute(array($_REQUEST['res'])); 
+
+  // $table = $response->fetch();
+  // var_dump($table);
+}
 
 ?>
 
@@ -55,8 +80,8 @@ var_dump($posts);
       <dl>
         <dt><?php print($member['name'])?>さん、メッセージをどうぞ</dt>
         <dd>
-          <textarea name="message" cols="50" rows="5"></textarea>
-          <input type="hidden" name="reply_post_id" value="" />
+          <textarea name="message" cols="50" rows="5"><?php print(htmlspecialchars($message, ENT_QUOTES))?></textarea>
+          <input type="hidden" name="reply_post_id" value="<?php print(htmlspecialchars($_REQUEST['res'], ENT_QUOTES)); ?>" />
         </dd>
       </dl>
       <div>
@@ -69,12 +94,12 @@ var_dump($posts);
 <?php foreach($posts as $post): ?>
     <div class="msg">
     <img src="member_picture/<?php htmlspecialchars(print($post['picture']), ENT_QUOTES) ;?>" width="48" height="48" alt="<?php htmlspecialchars(print($post['name']), ENT_QUOTES) ;?>" />
-    <p><?php htmlspecialchars(print($post['message']), ENT_QUOTES) ;?><span class="name">（<?php htmlspecialchars(print($post['name']), ENT_QUOTES) ;?>）</span>[<a href="index.php?res=">Re</a>]</p>
+    <p><?php htmlspecialchars(print($post['message']), ENT_QUOTES) ;?><span class="name">（<?php htmlspecialchars(print($post['name']), ENT_QUOTES) ;?>）</span>[<a href="index.php?res=<?php print(htmlspecialchars($post['id'], ENT_QUOTES))?>">Re</a>]</p>
     <p class="day"><?php htmlspecialchars(print($post['created_at']), ENT_QUOTES) ;?> <a href="view.php?id="></a>
-<a href="view.php?id=">
-返信元のメッセージ</a>
-[<a href="delete.php?id="
-style="color: #F33;">削除</a>]
+    <a href="view.php?id=">
+    返信元のメッセージ</a>
+    [<a href="delete.php?id="
+    style="color: #F33;">削除</a>]
 <?php endforeach; ?>
     </p>
     </div>
