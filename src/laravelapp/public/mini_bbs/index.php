@@ -29,7 +29,7 @@ if (!empty($_POST)) {
   }
 }
 
-$posts = $db->query('SELECT posts.id, members.picture, members.name, posts.message, posts.created_at, posts.message_reply_id, posts.member_id FROM members left join posts on members.id=posts.member_id order by posts.created_at desc');
+$posts = $db->query('SELECT posts.id, members.picture, members.name, posts.message, posts.created_at, posts.message_reply_id, posts.member_id FROM members left join posts on members.id=posts.member_id order by posts.created_at desc LIMIT 0, 5');
 
 if (isset($_REQUEST['res'])) {
   // 返信の処理
