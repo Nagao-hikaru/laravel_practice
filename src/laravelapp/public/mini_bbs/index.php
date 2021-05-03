@@ -29,33 +29,18 @@ if (!empty($_POST)) {
   }
 }
 
-// $posts = $db->query('SELECT * from members inner join posts on members.id = posts.member_id order by posts.created_at desc');
-
 $posts = $db->query('SELECT posts.id, members.picture, members.name, posts.message, posts.created_at, posts.message_reply_id FROM members left join posts on members.id=posts.member_id order by posts.created_at desc');
-// var_dump($posts);
 
 if (isset($_REQUEST['res'])) {
   // 返信の処理
-  // $response = $db->prepare('SELECT m.name, m.picture, p. FROM members m, posts p WHERE m.id=p.member_id AND p.id=?');
-  // $response->execute(array($_REQUEST['res']));
-
-  
   $response = $db->prepare('SELECT * FROM posts WHERE posts.id=?');
   $response->execute(array($_REQUEST['res']));
   $res = $response->fetch();
-  // var_dump($res);
   $men = $db->prepare('SELECT * FROM members WHERE members.id=?');
   $men->execute(array($res['member_id']));
   $contributor = $men->fetch();
 
   $message = '@' . $contributor['name'] . '' . $res['message'];
-
-
-  // $response = $db->query('SELECT * FROM members inner join posts on members.id = posts.member_id WHERE posts.id=?');
-  // $response->execute(array($_REQUEST['res'])); 
-
-  // $table = $response->fetch();
-  // var_dump($table);
 }
 
 ?>
