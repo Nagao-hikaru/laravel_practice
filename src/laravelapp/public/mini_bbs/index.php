@@ -87,7 +87,7 @@ if (isset($_REQUEST['res'])) {
       <a href="view.php?id=<?php htmlspecialchars(print($post['message_reply_id']), ENT_QUOTES) ;?>">
     返信元のメッセージ</a>
     <?php endif; ?>
-    [<a href="delete.php?id="
+    [<a href="delete.php?id=<?php print(htmlspecialchars($post['id'], ENT_QUOTES)); ?>"
     style="color: #F33;">削除</a>]
 <?php endforeach; ?>
     </p>
