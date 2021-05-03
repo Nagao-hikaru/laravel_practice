@@ -29,7 +29,7 @@ if (!empty($_POST)) {
   }
 }
 
-$posts = $db->query('SELECT posts.id, members.picture, members.name, posts.message, posts.created_at, posts.message_reply_id FROM members left join posts on members.id=posts.member_id order by posts.created_at desc');
+$posts = $db->query('SELECT posts.id, members.picture, members.name, posts.message, posts.created_at, posts.message_reply_id, posts.member_id FROM members left join posts on members.id=posts.member_id order by posts.created_at desc');
 
 if (isset($_REQUEST['res'])) {
   // 返信の処理
@@ -87,8 +87,9 @@ if (isset($_REQUEST['res'])) {
       <a href="view.php?id=<?php htmlspecialchars(print($post['message_reply_id']), ENT_QUOTES) ;?>">
     返信元のメッセージ</a>
     <?php endif; ?>
-    [<a href="delete.php?id=<?php print(htmlspecialchars($post['id'], ENT_QUOTES)); ?>"
-    style="color: #F33;">削除</a>]
+    <?php if ($_SESSION['id'] == )?>
+      [<a href="delete.php?id=<?php print(htmlspecialchars($post['id'], ENT_QUOTES)); ?>"
+      style="color: #F33;">削除</a>]
 <?php endforeach; ?>
     </p>
     </div>
