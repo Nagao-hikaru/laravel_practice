@@ -6,6 +6,12 @@ var app = new Vue({
     user: {
       lastname: 'yamada',
       firstname: 'syouta',
-    }
+      prefecture: 'Tokyo',
+    },
+    colors: [
+      'Red',
+      'Green',
+      'Blue',
+    ]
   }
 })
