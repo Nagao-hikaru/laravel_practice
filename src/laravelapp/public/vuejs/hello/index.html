@@ -9,18 +9,14 @@
 <body>
   <div id="app">
     <p>
-      {{ message }}
+      <input type="text" v-model="message">
     </p>
     <p>
-      {{ count }}
+      <input type="text" v-model="message">
     </p>
-    <p>
-      {{ user.lastname}}
-    </p>
-    <p>
-      {{colors[0]}}
-    </p>
+    <pre>{{ $data }}</pre>
   </div>
+  
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
   <script src="js/main.js"></script>
 
