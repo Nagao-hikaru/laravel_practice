@@ -1,6 +1,4 @@
-Vue.component('component-js', {
-  template: '<a>Hello.js</a>',
-})
+
 
 var app = new Vue({
   el: '#app',
